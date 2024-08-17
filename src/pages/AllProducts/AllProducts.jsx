@@ -1,39 +1,62 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaStar } from "react-icons/fa";
-
+import { useLoaderData } from "react-router-dom";
+import './allProducts.css';
 
 const AllProducts = () => {
     const [allProducts, setAllProducts] = useState([])
-    const [page, setPage] = useState(10);
-    const [totalPages, setTotalPages] = useState(1);
     const [category, setCategory] = useState('');
     const [sort, setSort] = useState('')
     const [search, setSearch] = useState('')
-    console.log(search);
+    const searchRef= useRef(null)
+    // eslint-disable-next-line no-unused-vars
+    const [itemPerPage, setItemPerPage] = useState(9)
+    const [currentPage, setCurrentPage] = useState(0)
+    const { count } = useLoaderData()
+    const numberOfPages = Math.ceil(count / itemPerPage)
+    const pages = [...Array(numberOfPages).keys()]
+
+
     useEffect(() => {
-        fetch(`http://localhost:5000/allProducts?sort=${sort}&search=${search}&category=${category}`)
+        fetch(`http://localhost:5000/allProducts?sort=${sort}&search=${search}&category=${category}&page=${currentPage}&size=${itemPerPage}`)
             .then(res => res.json())
             .then(data => {
                 setAllProducts(data);
-                setTotalPages(totalPages)
             })
-    }, [category, page, search, sort, totalPages])
+    }, [category, currentPage, itemPerPage, search, sort])
+
     const handleSearch = e => {
         e.preventDefault()
         const searchText = e.target.search.value
-        setSearch(searchText)
+        setSearch(searchText)   
+    }
+    const handlePrevPage = () => {
+        if (currentPage > 0) {
+            setCurrentPage(currentPage - 1)
+        }
+    }
+    const handleNextPage = () => {
+        if (currentPage < pages.length - 1) {
+            setCurrentPage(currentPage + 1)
+        }
+    }
+    const handleReset = () => {
+        setSearch('')
+        setCategory('')
+        setSort('')
+        searchRef.current.value = '';
     }
     return (
         <div className="max-w-6xl mx-auto my-20 p-2">
-            <div className="flex flex-col md:flex-row gap-6">
+            <div className="flex flex-col md:flex-row gap-6 mb-10 justify-between">
                 <form onSubmit={handleSearch}>
-                    <div className="border-2 border-red-700 rounded-lg py-2 px-4" >
-                        <input type="text" name='search' placeholder="Find best product" className="outline-none" />
+                    <div className="border-2 border-amber-500 rounded-lg py-2 px-4" >
+                        <input type="text" ref={searchRef} name='search' placeholder="Find best product" className="outline-none" />
                         <input type="submit" value="search" className=" btn btn-sm" />
                     </div>
                 </form>
                 <select
-                    className="border-2 border-red-700 py-2 px-4"
+                    className="border-2 border-amber-500 py-2 px-4"
                     value={category} onChange={(e) => setCategory(e.target.value)}>
                     <option value="">All Categories</option>
                     {
@@ -42,7 +65,7 @@ const AllProducts = () => {
                 </select>
                 {/* sort */}
                 <select
-                    className="border-2 border-red-700 py-2 px-4"
+                    className="border-2 border-amber-500 py-2 px-4"
                     value={sort} onChange={(e) => setSort(e.target.value)}
                 >
                     <option value="">Sort By</option>
@@ -50,6 +73,8 @@ const AllProducts = () => {
                     <option value="priceDesc">Price: High to Low</option>
                     <option value="dateDesc">Newest First</option>
                 </select>
+                {/* resetbutton */}
+                <button onClick={(handleReset)} className="btn bg-amber-500 text-white">Reset all</button>
             </div>
             <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-5 ">
                 {allProducts.map((product, index) => (
@@ -79,10 +104,17 @@ const AllProducts = () => {
                     </div>
                 ))}
             </div>
-            <div>
-                <button onClick={() => setPage(page - 1)} disabled={page === 1}>Previous</button>
-                <span>{page} of {totalPages}</span>
-                <button onClick={() => setPage(page + 1)} disabled={page === totalPages}>Next</button>
+            <div className="pagination mt-10 text-center">
+                <button onClick={handlePrevPage}>Prev</button>
+                {
+                    pages.map((page) => <button
+                        className={currentPage === page ? 'selected' : ''}
+                        onClick={() => setCurrentPage(page)}
+                        key={page}
+                    >
+                        {page + 1}</button>)
+                }
+                <button onClick={handleNextPage}>Next</button>
             </div>
         </div>
     );

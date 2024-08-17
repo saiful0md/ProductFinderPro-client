@@ -30,6 +30,7 @@ export const router = createBrowserRouter([
         element: <ProtectorRuout>
           <AllProducts></AllProducts>
         </ProtectorRuout>,
+        loader:()=>fetch('http://localhost:5000/productsCount')
       },
     ]
   },

@@ -1,0 +1,14 @@
+.pagination .selected{
+    background: rgb(158, 96, 3);
+    
+}
+.pagination button{
+    background: rgb(235, 143, 5);
+    margin-right: 10px;
+    padding: 10px 20px;
+    color: wheat;
+    border-radius: 10px;
+}
+.pagination button:hover{
+    background: rgb(163, 102, 9);
+}

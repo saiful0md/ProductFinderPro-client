@@ -19,8 +19,8 @@ const Navbar = () => {
                 isPending
                     ? "pending"
                     : isActive
-                        ? "text-red-700 border-b-4 border-red-700 hover:text-red-700 hover:bg-transparent bg-transparent rounded-none"
-                        : "hover:text-red-700 "
+                        ? "text-amber-500 border-b-4 border-amber-500 hover:text-amber-600 hover:bg-transparent bg-transparent rounded-none"
+                        : "hover:text-amber-600 "
             ]
         } to={'/'}>Home</NavLink></li>
         <li><NavLink className={({ isActive, isPending }) =>
@@ -28,8 +28,8 @@ const Navbar = () => {
                 isPending
                     ? "pending"
                     : isActive
-                        ? "text-red-700 border-b-4 border-red-700 hover:text-red-700 hover:bg-transparent bg-transparent rounded-none"
-                        : "hover:text-red-700 "
+                        ? "text-amber-500 border-b-4 border-amber-500 hover:text-amber-600 hover:bg-transparent bg-transparent rounded-none"
+                        : "hover:text-amber-600 "
             ]
         } to={'/allProducts'}>All Products</NavLink></li>
         
@@ -59,7 +59,7 @@ const Navbar = () => {
     }
 
     return (
-        <div className="navbar bg-base-100 border border-red-700 mt-2 container max-w-6xl mx-auto">
+        <div className="navbar bg-base-100 border border-amber-500 mt-2 container max-w-6xl mx-auto">
             <div className="navbar-start">
                 <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -69,7 +69,7 @@ const Navbar = () => {
                         {navLinks}
                     </ul>
                 </div>
-                <a className="btn bg-transparent border-none shadow-none hover:bg-transparent lg:text-xl">Product <span className='text-red-600'>Finder</span></a>
+                <Link to={'/'} className="btn bg-transparent border-none shadow-none hover:bg-transparent lg:text-xl">Product <span className='text-amber-500'>Finder</span></Link>
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal px-1">
