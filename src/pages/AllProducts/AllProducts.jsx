@@ -18,7 +18,7 @@ const AllProducts = () => {
 
 
     useEffect(() => {
-        fetch(`http://localhost:5000/allProducts?sort=${sort}&search=${search}&category=${category}&page=${currentPage}&size=${itemPerPage}`)
+        fetch(`https://product-finder-pro-server.vercel.app/allProducts?sort=${sort}&search=${search}&category=${category}&page=${currentPage}&size=${itemPerPage}`)
             .then(res => res.json())
             .then(data => {
                 setAllProducts(data);
