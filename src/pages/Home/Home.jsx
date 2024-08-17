@@ -2,8 +2,8 @@
 
 const Home = () => {
     return (
-        <div>
-            home
+        <div className="max-w-6xl mx-auto">
+           <h1 className="text-5xl text-center my-10"> Find Your Favourite product</h1>
         </div>
     );
 };
