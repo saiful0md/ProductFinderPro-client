@@ -4,34 +4,42 @@ import { FaStar } from "react-icons/fa";
 
 const AllProducts = () => {
     const [allProducts, setAllProducts] = useState([])
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(10);
     const [totalPages, setTotalPages] = useState(1);
+    const [category, setCategory] = useState('');
     const [sort, setSort] = useState('')
     const [search, setSearch] = useState('')
     console.log(search);
     useEffect(() => {
-        fetch(`http://localhost:5000/allProducts?sort=${sort}&search=${search}`)
+        fetch(`http://localhost:5000/allProducts?sort=${sort}&search=${search}&category=${category}`)
             .then(res => res.json())
             .then(data => {
                 setAllProducts(data);
                 setTotalPages(totalPages)
             })
-    }, [page, search, sort, totalPages])
+    }, [category, page, search, sort, totalPages])
     const handleSearch = e => {
         e.preventDefault()
         const searchText = e.target.search.value
         setSearch(searchText)
     }
     return (
-        <div className="max-w-6xl mx-auto my-20">
-            <div className="flex gap-6">
-                {/* <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search products..." /> */}
+        <div className="max-w-6xl mx-auto my-20 p-2">
+            <div className="flex flex-col md:flex-row gap-6">
                 <form onSubmit={handleSearch}>
                     <div className="border-2 border-red-700 rounded-lg py-2 px-4" >
-                        <input type="text" name='search' className="outline-none" />
-                        <input type="submit" value="search" className="" />
+                        <input type="text" name='search' placeholder="Find best product" className="outline-none" />
+                        <input type="submit" value="search" className=" btn btn-sm" />
                     </div>
                 </form>
+                <select
+                    className="border-2 border-red-700 py-2 px-4"
+                    value={category} onChange={(e) => setCategory(e.target.value)}>
+                    <option value="">All Categories</option>
+                    {
+                        allProducts.map(productCategory => <option key={productCategory._id} value={productCategory.category}>{productCategory.category}</option>)
+                    }
+                </select>
                 {/* sort */}
                 <select
                     className="border-2 border-red-700 py-2 px-4"
@@ -43,7 +51,7 @@ const AllProducts = () => {
                     <option value="dateDesc">Newest First</option>
                 </select>
             </div>
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-5 p-2">
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-5 ">
                 {allProducts.map((product, index) => (
                     <div
                         key={index}
